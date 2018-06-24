@@ -2,6 +2,7 @@ package pl.sda.spring.petclinic.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -127,6 +129,18 @@ public class OwnerControllerTest {
                 .andExpect(jsonPath("$[1].firstname").value("Adam"))
                 .andExpect(jsonPath("$[1].lastname").value("Nowak"))
                 .andExpect(jsonPath("$[1].adress.country").value("Poland"));
+    }
 
+    @Test
+    public void should_create_owner() throws Exception {
+        Owner owner = owners.get(0);
+        owner.setId(null);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String ownerAsJson = objectMapper.writeValueAsString(owner);
+        mockMvc.perform(post("/api/v1/owner")
+                .content(ownerAsJson)
+                .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(status().isCreated());
     }
 }
