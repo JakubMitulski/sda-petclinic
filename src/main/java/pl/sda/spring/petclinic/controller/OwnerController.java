@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.sda.spring.petclinic.model.Owner;
 import pl.sda.spring.petclinic.service.OwnerService;
 
+import java.util.Collection;
+
 @RestController
 @RequestMapping("/api/v1")
-public class OwnerController{
+public class OwnerController {
 
     private final OwnerService ownerService;
 
@@ -20,13 +22,14 @@ public class OwnerController{
     }
 
     @GetMapping(path = "/owner/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Owner> getOwnerById(@PathVariable Long id){
+    public ResponseEntity<Owner> getOwnerById(@PathVariable Long id) {
         Owner ownerById = ownerService.findOwnerById(id);
         return ResponseEntity.ok(ownerById);
     }
 
-    @GetMapping(path = "/owner/{lastname}")
-    public ResponseEntity<Owner> getOwnerByLastName(@PathVariable String lastname){
-        return null;
+    @GetMapping(path = "/owners", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Collection<Owner>> getAllOwners() {
+        return ResponseEntity.ok(ownerService.findAllOwners());
     }
+
 }
