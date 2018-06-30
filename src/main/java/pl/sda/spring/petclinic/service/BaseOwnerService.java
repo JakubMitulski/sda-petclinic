@@ -37,11 +37,20 @@ public class BaseOwnerService implements OwnerService {
 
     @Override
     public void saveOwner(Owner owner) {
-
+        this.ownerRepository.save(owner);
     }
 
     @Override
     public Collection<Owner> findOwnerByLastname(String lastname) {
         return null;
+    }
+
+    @Override
+    public void updateOwner(Owner owner) {
+
+        if (owner.getId() == null || !this.ownerRepository.existsById(owner.getId())){
+            throw new OwnerNotFoundException();
+        }
+        this.ownerRepository.save(owner);
     }
 }

@@ -1,7 +1,5 @@
 package pl.sda.spring.petclinic.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -49,11 +47,14 @@ public class OwnerControllerTest {
 
     @Before
     public void initOwners() {
+        MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders
                 .standaloneSetup(ownerController)
                 .setControllerAdvice(new ApplicationErrorHandler())
                 .build();
-        MockitoAnnotations.initMocks(this);
+
+        //logike obslugi wyjatkow oddzielamy od logiki biznesowej aplikacji
+        // i przezucamy to z wykorzystaniem aop do applicationhandlera
 
         owners = new ArrayList<>();
         Owner owner = new Owner();
@@ -142,5 +143,24 @@ public class OwnerControllerTest {
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void should_update_owner() throws Exception {
+        Owner owner = owners.get(0);
+        owner.setFirstname("Witamwitam");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String ownerAsJson = objectMapper.writeValueAsString(owner);
+
+        mockMvc.perform(put("/api/v1/owner")
+                .content(ownerAsJson)
+                .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void should_delete_owner() throws Exception {
+
     }
 }

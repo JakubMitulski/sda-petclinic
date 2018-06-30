@@ -3,11 +3,14 @@ package pl.sda.spring.petclinic.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.sda.spring.petclinic.model.Owner;
 import pl.sda.spring.petclinic.service.OwnerService;
 
+import javax.validation.Valid;
 import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -31,9 +34,29 @@ public class OwnerController {
     }
 
     @PostMapping(path = "/owner", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Owner> createOwner(@RequestBody Owner owner){
+    public ResponseEntity<Owner> createOwner(@RequestBody Owner owner) {
         this.ownerService.saveOwner(owner);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping(path = "/owner", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Owner> updateOwner(@RequestBody @Valid Owner owner, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        ownerService.updateOwner(owner);
+        return ResponseEntity.ok(owner);
+    }
+
+    //todo: kasowanie ownera
+
+    @DeleteMapping(path = "/owner", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Owner> deleteOwner(@PathVariable Long id) {
+
+
+        return ResponseEntity.badRequest().build();
     }
 
 }
