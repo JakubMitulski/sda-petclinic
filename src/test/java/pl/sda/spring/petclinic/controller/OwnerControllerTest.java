@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.sda.spring.petclinic.aop.ApplicationErrorHandler;
 import pl.sda.spring.petclinic.exception.OwnerNotFoundException;
-import pl.sda.spring.petclinic.model.Adress;
+import pl.sda.spring.petclinic.model.Address;
 import pl.sda.spring.petclinic.model.Owner;
 import pl.sda.spring.petclinic.service.OwnerService;
 
@@ -61,24 +61,24 @@ public class OwnerControllerTest {
         owner.setId(1L);
         owner.setFirstname("Jan");
         owner.setLastname("Kowalski");
-        Adress adress = new Adress();
-        adress.setCity("Poznan");
-        adress.setCountry("Poland");
-        adress.setPostalcode("60-000");
-        adress.setStreet("Witacza");
-        owner.setAdress(adress);
+        Address address = new Address();
+        address.setCity("Poznan");
+        address.setCountry("Poland");
+        address.setPostalcode("60-000");
+        address.setStreet("Witacza");
+        owner.setAddress(address);
         owners.add(owner);
 
         owner = new Owner();
         owner.setId(1L);
         owner.setFirstname("Adam");
         owner.setLastname("Nowak");
-        adress = new Adress();
-        adress.setCity("Witam");
-        adress.setCountry("Poland");
-        adress.setPostalcode("80-000");
-        adress.setStreet("Witamwitam");
-        owner.setAdress(adress);
+        address = new Address();
+        address.setCity("Witam");
+        address.setCountry("Poland");
+        address.setPostalcode("80-000");
+        address.setStreet("Witamwitam");
+        owner.setAddress(address);
         owners.add(owner);
     }
 

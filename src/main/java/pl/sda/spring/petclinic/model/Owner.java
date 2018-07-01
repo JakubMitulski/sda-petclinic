@@ -11,7 +11,7 @@ public class Owner {
     private Long id;
     private String firstname;
     private String lastname;
-    private Adress adress;
+    private Address address;
     private Set<Pet> pets = new HashSet<>();
 
     @Id
@@ -40,12 +40,12 @@ public class Owner {
         this.lastname = lastname;
     }
 
-    public Adress getAdress() {
-        return adress;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAdress(Adress adress) {
-        this.adress = adress;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.EAGER)
