@@ -6,7 +6,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.sda.spring.petclinic.exception.UserNotFoundException;
 import pl.sda.spring.petclinic.model.ApplicationUser;
@@ -21,7 +20,7 @@ public class ApplicationUserDetailsService implements UserDetailsService {
     private final ApplicationUserRepository applicationUserRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) {
         ApplicationUser applicationUser = applicationUserRepository
                 .findByEmail(email)
                 .orElseThrow(UserNotFoundException::new);
